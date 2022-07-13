@@ -1,5 +1,4 @@
 const margins = {
-  null: "0em",
   xxxsmall: "0.25em",
   xxsmall: "0.5em",
   xsmall: "0.625em",

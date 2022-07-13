@@ -17,7 +17,7 @@ const Container: FC<ContainerProps> = styled("header")<ContainerProps>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 ${({ theme }) => theme.spacing.xxxlarge};
+  padding: 0 ${({ theme }) => theme.spacing.xxlarge};
   height: 4em;
 
   // hasBorder variant
