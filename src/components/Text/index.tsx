@@ -2,18 +2,28 @@ import React, { FC, ReactNode } from "react";
 
 import styled, { css } from "styled-components";
 
-import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
+import getSpacingStyles, { SizingPropType, SpacingProps } from "../utils/spacingStyles";
+import DefaultProps from "../utils/defaultProps";
 
 interface StyledTextProps extends SpacingProps {
   color?: string;
+  size?: SizingPropType;
   children: ReactNode;
+  theme?: any;
 }
+
+const getCommonTextStyles = (props: StyledTextProps) => css`
+  color: ${props.color
+    ? props.theme.colors[props.color.split(".")[0]][props.color.split(".")[1]]
+    : props.theme.colors.neutral.n100};
+`;
 
 const H1: FC<StyledTextProps> = styled("h1")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
+  ${(props) => getCommonTextStyles(props)}
+  
   font-size: ${({ theme }) => theme.sizing.xxxlarge};
-  font-weight: 500;
-  color: ${({ theme, color }) => (color ? color : theme.colors.neutral.n100)};
+  font-weight: 600;
 
   span {
     font-weight: 700;
@@ -26,19 +36,21 @@ const H1: FC<StyledTextProps> = styled("h1")<StyledTextProps>`
 
 const H2: FC<StyledTextProps> = styled("h2")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
+  ${(props) => getCommonTextStyles(props)}
+
   font-size: ${({ theme }) => theme.sizing.xxlarge};
   font-weight: 500;
-  color: ${({ theme, color }) => (color ? color : theme.colors.neutral.n100)};
 `;
 
 const P: FC<StyledTextProps> = styled("p")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
-  font-size: ${({ theme }) => theme.sizing.xxlarge};
+  ${(props) => getCommonTextStyles(props)}
+
+  font-size: ${({ theme, size }) => (size ? theme.sizing[size] : theme.sizing.regular)};
   font-weight: 500;
-  color: ${({ theme, color }) => (color ? color : theme.colors.neutral.n100)};
 `;
 
-interface TextProps extends StyledTextProps {
+interface TextProps extends DefaultProps, StyledTextProps {
   type: "h1" | "h2" | "p";
 }
 

@@ -2,8 +2,9 @@ import React, { FC } from "react";
 
 import styled, { css } from "styled-components";
 import { darken, transparentize } from "polished";
+import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
 
-interface ButtonProps {
+interface ButtonProps extends SpacingProps {
   light?: boolean;
   big?: boolean;
   children: string;
@@ -11,11 +12,12 @@ interface ButtonProps {
 
 const StyledButton: FC<ButtonProps> = styled("button")<ButtonProps>`
   // default style
-  height: ${({ theme }) => theme.sizing.xxlarge};
-  padding: 0 ${({ theme }) => theme.spacing.large};
+  ${(props) => getSpacingStyles(props)}
+  padding: ${({ theme }) => `${theme.spacing.xxsmall} ${theme.spacing.large}`};
   background-color: ${({ theme }) => theme.colors.main};
   border-radius: ${({ theme }) => theme.sizing.xxxsmall};
   color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.sizing.small};
   font-weight: 500;
   :hover {
     background-color: ${({ theme }) => darken(0.1, theme.colors.main)};
@@ -30,13 +32,21 @@ const StyledButton: FC<ButtonProps> = styled("button")<ButtonProps>`
       color: ${({ theme }) => theme.colors.main};
     `}
 
+  // big variant
+      ${({ theme, big }) =>
+    big &&
+    css`
+      font-size: ${({ theme }) => theme.sizing.regular};
+      padding: ${theme.spacing.xsmall} ${theme.spacing.large};
+    `}
+
   // animations
   transition: background-color .2s;
 `;
 
-const Button: FC<ButtonProps> = ({ light, big, children }) => {
+const Button: FC<ButtonProps> = ({ light, big, children, ...props }) => {
   return (
-    <StyledButton light={light} big={big}>
+    <StyledButton light={light} big={big} {...props}>
       {children}
     </StyledButton>
   );
