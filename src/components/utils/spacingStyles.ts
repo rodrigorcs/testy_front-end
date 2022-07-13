@@ -1,6 +1,6 @@
 import { css } from "styled-components";
 
-type SpacingPropType =
+export type SizingPropType =
   | "xxxsmall"
   | "xxsmall"
   | "xsmall"
@@ -12,21 +12,21 @@ type SpacingPropType =
   | "xxxlarge";
 
 export interface SpacingProps {
-  margin?: SpacingPropType;
-  marginHorizontal?: SpacingPropType;
-  marginVertical?: SpacingPropType;
-  marginTop?: SpacingPropType;
-  marginRight?: SpacingPropType;
-  marginBottom?: SpacingPropType;
-  marginLeft?: SpacingPropType;
+  margin?: SizingPropType;
+  marginHorizontal?: SizingPropType;
+  marginVertical?: SizingPropType;
+  marginTop?: SizingPropType;
+  marginRight?: SizingPropType;
+  marginBottom?: SizingPropType;
+  marginLeft?: SizingPropType;
 
-  padding?: SpacingPropType;
-  paddingHorizontal?: SpacingPropType;
-  paddingVertical?: SpacingPropType;
-  paddingTop?: SpacingPropType;
-  paddingRight?: SpacingPropType;
-  paddingBottom?: SpacingPropType;
-  paddingLeft?: SpacingPropType;
+  padding?: SizingPropType;
+  paddingHorizontal?: SizingPropType;
+  paddingVertical?: SizingPropType;
+  paddingTop?: SizingPropType;
+  paddingRight?: SizingPropType;
+  paddingBottom?: SizingPropType;
+  paddingLeft?: SizingPropType;
 }
 
 interface ComponentProps extends SpacingProps {
