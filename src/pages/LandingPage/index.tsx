@@ -1,52 +1,49 @@
-import React, { FC, ReactNode, MutableRefObject, useRef, useState, useLayoutEffect } from "react";
+import React, { FC, ReactNode } from "react";
 
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import getSpacingStyles, { SpacingProps } from "../../components/utils/spacingStyles";
+import { SpacingProps } from "../../components/utils/spacingStyles";
+
+import PageWrapper from "../../components/PageWrapper";
 import Header from "../../components/Header";
+import PageContent from "../../components/PageContent";
 import Text from "../../components/Text";
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
 
-const Container: FC<{ children: ReactNode }> = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: ${({ theme }) => theme.colors.background.b100};
-`;
+import illustrationReadingSrc from "../../assets/illustration-reading.svg";
+import illustrationDayOffSrc from "../../assets/illustration-a_day_off.svg";
+import theme from "../../theme";
 
-interface PageContentProps extends SpacingProps {
+interface TextWrapperProps extends SpacingProps {
   children: ReactNode;
 }
 
-const PageContent: FC<PageContentProps> = styled.div`
-  ${(props) => getSpacingStyles(props)}
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  z-index: 2;
-`;
-
-interface TextContainerProps extends SpacingProps {
-  children: ReactNode;
-}
-
-const TextContainer: FC<TextContainerProps> = styled.div`
+const TextWrapper: FC<TextWrapperProps> = styled.section`
   max-width: 49em;
   display: flex;
   flex-direction: column;
-  & :not(:first-child) {
+  & > :not(:first-child) {
     margin-top: ${({ theme }) => theme.spacing.regular};
   }
 `;
 
+const illustrations = [
+  { src: illustrationReadingSrc, marginLeft: "2em", positionY: "-7.2em", height: "9em" },
+  { src: illustrationDayOffSrc, marginRight: "0em", positionY: "-25.9em", height: "28em" },
+];
+
 const LandingPage: FC = () => {
+  const navigate = useNavigate();
+  const handleGoToInstructions = () => {
+    navigate("instructions");
+  };
   return (
-    <Container>
+    <PageWrapper backgroundColor={theme.colors.background.b100}>
       <Header />
       <PageContent padding="xxxlarge">
-        <TextContainer>
+        <TextWrapper>
           <Text type="h1">
             Are you more of an <span>introvert</span> or <span>extrovert</span>?
           </Text>
@@ -54,13 +51,13 @@ const LandingPage: FC = () => {
             We all know that understanding who you are is a big step in the way to become successful in any
             aspect of your life. Let’s see how do you fit into the introvert/extrovert spectrum!
           </Text>
-        </TextContainer>
-        <Button big marginTop="xxlarge">
+        </TextWrapper>
+        <Button big marginTop="xxlarge" onClick={handleGoToInstructions}>
           Take me to the Test!
         </Button>
       </PageContent>
-      <Footer />
-    </Container>
+      <Footer illustrations={illustrations} />
+    </PageWrapper>
   );
 };
 
