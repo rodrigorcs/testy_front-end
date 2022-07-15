@@ -2,19 +2,16 @@ import React, { FC, ReactNode } from "react";
 
 import styled, { css } from "styled-components";
 
-import illustrationSrc1 from "../../assets/illustration-reading.svg";
-import illustrationSrc2 from "../../assets/illustration-a_day_off.svg";
-import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
-
 interface ContainerProps {
   color?: boolean;
   children: ReactNode;
 }
 
-const Container: FC<ContainerProps> = styled("header")<ContainerProps>`
+const Container: FC<ContainerProps> = styled("footer")<ContainerProps>`
   // default style
   padding: 0 ${({ theme }) => theme.spacing.xxlarge};
   height: 6em;
+  min-height: 2em;
   background-color: ${({ theme }) => theme.colors.secondary.s300};
 `;
 
@@ -48,14 +45,15 @@ const Illustration: FC<IllustrationProps> = styled("img")<IllustrationProps>`
 `;
 
 interface FooterProps {
-  hasBorder?: boolean;
+  illustrations?: IllustrationProps[];
 }
 
-const Footer: FC<FooterProps> = (props) => {
+const Footer: FC<FooterProps> = ({ illustrations }) => {
   return (
     <Container>
-      <Illustration src={illustrationSrc1} marginLeft="2em" positionY="-7.2em" height="9em" />
-      <Illustration src={illustrationSrc2} marginRight="0em" positionY="-25.9em" height="28em" />
+      {illustrations?.map((illustration) => (
+        <Illustration {...illustration} key={illustration.src} />
+      ))}
     </Container>
   );
 };

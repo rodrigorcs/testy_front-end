@@ -17,7 +17,8 @@ const Container: FC<ContainerProps> = styled("header")<ContainerProps>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 ${({ theme }) => theme.spacing.xxlarge};
+  padding: 0 ${({ theme }) => theme.spacing.xxlarge} !important;
+  min-height: 4em;
   height: 4em;
 
   // hasBorder variant
@@ -36,8 +37,8 @@ const Logo: FC<LogoProps> = styled.img`
   height: ${({ theme }) => theme.sizing.xlarge};
 `;
 
-const ButtonsContainer: FC<{ children: ReactNode }> = styled.div`
-  & :not(:first-child) {
+const ButtonsWrapper: FC<{ children: ReactNode }> = styled.div`
+  & > :not(:first-child) {
     margin-left: ${({ theme }) => theme.spacing.xxsmall};
   }
 `;
@@ -51,10 +52,10 @@ const Header: FC<HeaderProps> = ({ hasBorder }) => {
   return (
     <Container hasBorder={hasBorder}>
       <Logo src={logoSrc} />
-      <ButtonsContainer>
+      <ButtonsWrapper>
         <Button light>Sign Up</Button>
         <Button>Sign In</Button>
-      </ButtonsContainer>
+      </ButtonsWrapper>
     </Container>
   );
 };

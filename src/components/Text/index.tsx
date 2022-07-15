@@ -13,16 +13,22 @@ interface StyledTextProps extends SpacingProps {
 }
 
 const getCommonTextStyles = (props: StyledTextProps) => css`
+  white-space: pre-line;
   color: ${props.color
     ? props.theme.colors[props.color.split(".")[0]][props.color.split(".")[1]]
     : props.theme.colors.neutral.n100};
+  ${props.size &&
+  css`
+    font-size: ${props.theme.sizing[props.size]};
+  `}
 `;
 
 const H1: FC<StyledTextProps> = styled("h1")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
-  ${(props) => getCommonTextStyles(props)}
-  
+
   font-size: ${({ theme }) => theme.sizing.xxxlarge};
+  ${(props) => getCommonTextStyles(props)}
+
   font-weight: 600;
 
   span {
@@ -36,18 +42,32 @@ const H1: FC<StyledTextProps> = styled("h1")<StyledTextProps>`
 
 const H2: FC<StyledTextProps> = styled("h2")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
-  ${(props) => getCommonTextStyles(props)}
 
   font-size: ${({ theme }) => theme.sizing.xxlarge};
+  ${(props) => getCommonTextStyles(props)}
+
   font-weight: 500;
+
+  span {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: ${({ theme }) => theme.colors.secondary.s200};
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.15rem;
+  }
 `;
 
 const P: FC<StyledTextProps> = styled("p")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
+
+  font-size: ${({ theme }) => theme.sizing.regular};
   ${(props) => getCommonTextStyles(props)}
 
-  font-size: ${({ theme, size }) => (size ? theme.sizing[size] : theme.sizing.regular)};
   font-weight: 500;
+
+  span {
+    font-weight: 700;
+  }
 `;
 
 interface TextProps extends DefaultProps, StyledTextProps {
