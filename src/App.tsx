@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 
 import theme from "./theme";
 import routes from "./routes";
+import { QuestionsProvider } from "./context/QuestionsContext";
 
 const Router: FC = () => {
   return useRoutes(routes);
@@ -14,10 +15,12 @@ const Router: FC = () => {
 const App: FC = () => {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <GlobalStyle />
-        <Router />
-      </BrowserRouter>
+      <QuestionsProvider>
+        <BrowserRouter>
+          <GlobalStyle />
+          <Router />
+        </BrowserRouter>
+      </QuestionsProvider>
     </ThemeProvider>
   );
 };

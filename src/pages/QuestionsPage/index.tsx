@@ -1,4 +1,13 @@
-import React, { FC, ReactNode, ChangeEvent, HTMLProps, useState, FormEventHandler } from "react";
+import React, {
+  FC,
+  ReactNode,
+  ChangeEvent,
+  FormEvent,
+  HTMLProps,
+  useState,
+  FormEventHandler,
+  HTMLAttributeAnchorTarget,
+} from "react";
 
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
@@ -18,6 +27,7 @@ import Footer from "../../components/Footer";
 import illustrationFaqSrc from "../../assets/illustration-faq.svg";
 import ProgressBar from "../../components/ProgressBar";
 import { useFetch } from "../../hooks/useFetch";
+import { useQuestions } from "../../hooks/useQuestions";
 
 interface SubheaderProps extends SpacingProps {
   children: ReactNode;
@@ -109,13 +119,28 @@ type Question = {
   answers: Answer[];
 };
 
-const QuestionsPage: FC = () => {
-  const { data: questions } = useFetch<Question[]>("/questions");
+interface EventTarget extends HTMLFormElement {
+  answers: RadioNodeList;
+}
 
+const QuestionsPage: FC = () => {
+  const { questions, onAnswer, onChangeQuestion, selectedQuestion, selectedQuestionIndex } = useQuestions();
   const [selectedAnswerId, setSelectedAnswerId] = useState<string>();
+
+  const handleGoToPreviousQuestion = () => {
+    onChangeQuestion(selectedQuestionIndex - 1);
+  };
 
   const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedAnswerId(event.target.value);
+  };
+
+  const handleAnswerSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const targetElement = event.target as EventTarget;
+    onAnswer(targetElement.answers.value);
+    onChangeQuestion(selectedQuestionIndex + 1);
+
+    event.preventDefault();
   };
 
   const navigate = useNavigate();
@@ -125,9 +150,18 @@ const QuestionsPage: FC = () => {
       <Header hasBorder />
       <PageContent padding="xxlarge" alignment="center">
         <Subheader>
-          <ProgressBar filledItems={1} totalItems={questions ? questions.length : 0} />
+          <ProgressBar
+            filledItems={selectedQuestionIndex + 1}
+            totalItems={questions ? questions.length : 0}
+          />
           <SubheaderNavigation marginTop="large">
-            <Button text textColor="neutral.n300" Icon={FaChevronLeft}>
+            <Button
+              text
+              textColor="neutral.n300"
+              Icon={FaChevronLeft}
+              onClick={handleGoToPreviousQuestion}
+              disabled={selectedQuestionIndex <= 0}
+            >
               Previous
             </Button>
             <Text type="p" size="small" color="neutral.n300">
@@ -137,14 +171,14 @@ const QuestionsPage: FC = () => {
         </Subheader>
         <QuestionWrapper>
           <Text type="p" size="small" color="neutral.n300">
-            QUESTION 3 OF 5
+            QUESTION {selectedQuestionIndex + 1} OF {questions ? questions.length : 0}
           </Text>
           <Text type="p" size="large" marginTop="small">
-            {questions ? questions[0].title : "Loading..."}
+            {selectedQuestion ? selectedQuestion.title : "Loading..."}
           </Text>
-          <Form marginTop="large">
-            {questions ? (
-              questions[0].answers.map((answer) => {
+          <Form marginTop="large" onSubmit={handleAnswerSubmit}>
+            {selectedQuestion ? (
+              selectedQuestion.answers.map((answer) => {
                 return (
                   <Label key={answer.id} isChecked={answer.id === selectedAnswerId}>
                     <input type="radio" name="answers" value={answer.id} onChange={handleAnswerChange} />
@@ -155,12 +189,17 @@ const QuestionsPage: FC = () => {
             ) : (
               <span />
             )}
+            <QuestionFooter>
+              <Button
+                big
+                marginTop="large"
+                type="submit"
+                disabled={!questions || selectedQuestionIndex >= questions.length - 1}
+              >
+                Next
+              </Button>
+            </QuestionFooter>
           </Form>
-          <QuestionFooter>
-            <Button big marginTop="large" type="submit">
-              Next
-            </Button>
-          </QuestionFooter>
         </QuestionWrapper>
       </PageContent>
       <Footer illustrations={illustrations} />
