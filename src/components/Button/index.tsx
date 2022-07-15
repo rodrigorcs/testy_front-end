@@ -1,16 +1,19 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode, HTMLProps } from "react";
 
 import styled, { css } from "styled-components";
 import { darken, transparentize } from "polished";
 import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
+import { IconType } from "react-icons";
 
-interface ButtonProps extends SpacingProps {
+interface StyledButtonProps extends SpacingProps, HTMLProps<HTMLButtonElement> {
   light?: boolean;
   big?: boolean;
-  children: string;
+  text?: boolean;
+  textColor?: string;
+  children: ReactNode | string;
 }
 
-const StyledButton: FC<ButtonProps> = styled("button")<ButtonProps>`
+const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
   // default style
   ${(props) => getSpacingStyles(props)}
   padding: ${({ theme }) => `${theme.spacing.xxsmall} ${theme.spacing.large}`};
@@ -29,25 +32,59 @@ const StyledButton: FC<ButtonProps> = styled("button")<ButtonProps>`
     light &&
     css`
       background-color: ${transparentize(0.9, theme.colors.main)};
-      color: ${({ theme }) => theme.colors.main};
+      color: ${theme.colors.main};
     `}
 
   // big variant
       ${({ theme, big }) =>
     big &&
     css`
-      font-size: ${({ theme }) => theme.sizing.regular};
-      padding: ${theme.spacing.xsmall} ${theme.spacing.large};
+      font-size: ${theme.sizing.regular};
+      padding: ${theme.spacing.small} ${theme.spacing.large};
+    `}
+
+  // text variant
+  ${({ theme, text, textColor }) =>
+    text &&
+    css`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: ${({ theme }) => `${theme.spacing.xxsmall} ${theme.spacing.small}`};
+      background-color: transparent;
+      color: ${textColor
+        ? theme.colors[textColor.split(".")[0]][textColor.split(".")[1]]
+        : theme.colors.neutral.n100};
+      text-transform: uppercase;
+      :hover {
+        background-color: ${transparentize(0.9, theme.colors.main)};
+        color: ${({ theme }) => theme.colors.main};
+      }
+      & > :first-child {
+        margin-right: ${({ theme }) => theme.spacing.xsmall};
+      }
     `}
 
   // animations
-  transition: background-color .2s;
+  transition: background-color .2s, color .2s;
 `;
 
-const Button: FC<ButtonProps> = ({ light, big, children, ...props }) => {
+interface ButtonProps extends SpacingProps, HTMLProps<HTMLButtonElement> {
+  light?: boolean;
+  big?: boolean;
+  text?: boolean;
+  textColor?: string;
+  Icon?: IconType;
+  children: string;
+}
+
+const Button: FC<ButtonProps> = ({ light, big, text, textColor, Icon, children, ...props }) => {
   return (
-    <StyledButton light={light} big={big} {...props}>
-      {children}
+    <StyledButton light={light} big={big} text={text} textColor={textColor} {...props}>
+      <>
+        {Icon && <Icon size={12} />}
+        {children}
+      </>
     </StyledButton>
   );
 };
