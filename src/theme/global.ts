@@ -7,6 +7,10 @@ export default createGlobalStyle`${css`
     outline: 0;
     box-sizing: border-box;
     font-family: "Inter", "Roboto", sans-serif;
+
+    //DEBUGGING (commented)
+    /* background: rgb(100 0 0 / 0.1) !important;
+    border: 1px solid rgb(100 0 0) !important; */
   }
 
   html,

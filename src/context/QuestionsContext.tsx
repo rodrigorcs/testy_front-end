@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 
-type Answer = {
+export type Answer = {
   title: string;
   value: number;
   id: string;
@@ -42,11 +42,19 @@ export function QuestionsProvider({ children }: QuestionsProviderInterface) {
       selectedQuestionIndex,
       answerHistory,
     });
-  }, [, questions, selectedQuestion, selectedQuestionIndex, answerHistory]);
+  }, [, selectedQuestionIndex]);
 
   useEffect(() => {
-    if (questions) setSelectedQuestion(questions[selectedQuestionIndex]);
+    if (questions) {
+      setSelectedQuestion(questions[selectedQuestionIndex]);
+    }
   }, [questions, selectedQuestionIndex]);
+
+  useEffect(() => {
+    if (questions && answerHistory?.length < 1) {
+      setAnswerHistory(Array(questions.length).fill(null));
+    }
+  }, [questions]);
 
   function onAnswer(answerId: string) {
     let newAnswerHistory = [...answerHistory];
