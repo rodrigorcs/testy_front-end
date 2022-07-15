@@ -3,7 +3,6 @@ import React, { FC, ReactNode } from "react";
 import styled, { css } from "styled-components";
 
 import getSpacingStyles, { SizingPropType, SpacingProps } from "../utils/spacingStyles";
-import DefaultProps from "../utils/defaultProps";
 
 interface StyledTextProps extends SpacingProps {
   color?: string;
@@ -70,7 +69,7 @@ const P: FC<StyledTextProps> = styled("p")<StyledTextProps>`
   }
 `;
 
-interface TextProps extends DefaultProps, StyledTextProps {
+interface TextProps extends StyledTextProps {
   type: "h1" | "h2" | "p";
 }
 
