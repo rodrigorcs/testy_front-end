@@ -10,6 +10,7 @@ interface StyledButtonProps extends SpacingProps, HTMLProps<HTMLButtonElement> {
   big?: boolean;
   text?: boolean;
   textColor?: string;
+  iconAlignment: string;
   children: ReactNode | string;
 }
 
@@ -22,6 +23,7 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.sizing.small};
   font-weight: 500;
+  user-select: none;
   :hover {
     background-color: ${({ theme }) => darken(0.1, theme.colors.main)};
     color: ${({ theme }) => theme.colors.white};
@@ -60,13 +62,25 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
         background-color: ${transparentize(0.9, theme.colors.main)};
         color: ${({ theme }) => theme.colors.main};
       }
-      & > :first-child {
-        margin-right: ${({ theme }) => theme.spacing.xsmall};
+    `}
+
+    ${({ theme, iconAlignment }) =>
+    iconAlignment === "left" &&
+    css`
+      svg {
+        margin-right: ${theme.spacing.xsmall};
+      }
+    `}
+    ${({ theme, iconAlignment }) =>
+    iconAlignment === "right" &&
+    css`
+      svg {
+        margin-left: ${theme.spacing.xsmall};
       }
     `}
 
   // animations
-  transition: background-color .2s, color .2s;
+  transition: background-color 0.2s, color 0.2s;
 `;
 
 interface ButtonProps extends SpacingProps, HTMLProps<HTMLButtonElement> {
@@ -75,16 +89,45 @@ interface ButtonProps extends SpacingProps, HTMLProps<HTMLButtonElement> {
   text?: boolean;
   textColor?: string;
   Icon?: IconType;
+  iconAlignment?: "left" | "right";
   children: string;
 }
 
-const Button: FC<ButtonProps> = ({ light, big, text, textColor, Icon, children, ...props }) => {
-  return (
-    <StyledButton light={light} big={big} text={text} textColor={textColor} {...props}>
+const Button: FC<ButtonProps> = ({
+  light,
+  big,
+  text,
+  textColor,
+  Icon,
+  iconAlignment,
+  children,
+  ...props
+}) => {
+  const iconAlignmentVariants = {
+    left: (
       <>
         {Icon && <Icon size={12} />}
         {children}
       </>
+    ),
+    right: (
+      <>
+        {children}
+        {Icon && <Icon size={12} />}
+      </>
+    ),
+  };
+
+  return (
+    <StyledButton
+      light={light}
+      big={big}
+      text={text}
+      textColor={textColor}
+      iconAlignment={iconAlignment === "right" ? "right" : "left"}
+      {...props}
+    >
+      {iconAlignment ? iconAlignmentVariants[iconAlignment] : iconAlignmentVariants.left}
     </StyledButton>
   );
 };
