@@ -24,9 +24,15 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
   font-size: ${({ theme }) => theme.sizing.small};
   font-weight: 500;
   user-select: none;
+
   :hover {
     background-color: ${({ theme }) => darken(0.1, theme.colors.main)};
     color: ${({ theme }) => theme.colors.white};
+  }
+  :disabled {
+    cursor: default;
+    background-color: ${({ theme }) => theme.colors.neutral.n500};
+    color: ${({ theme }) => theme.colors.neutral.n300};
   }
 
   // light variant
@@ -61,6 +67,10 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
       :hover {
         background-color: ${transparentize(0.9, theme.colors.main)};
         color: ${({ theme }) => theme.colors.main};
+      }
+      :disabled {
+        background-color: transparent;
+        color: ${({ theme }) => theme.colors.neutral.n300};
       }
     `}
 
