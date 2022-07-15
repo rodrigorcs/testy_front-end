@@ -1,13 +1,16 @@
 import React, { FC, ChangeEvent, FormEvent, useState, useEffect } from "react";
 
+import { FaCheckCircle, FaChevronRight, FaRegCircle } from "react-icons/fa";
+
 import Text from "../../components/Text";
 import Button from "../../components/Button";
 
+import { Container, Form, Label, QuestionFooter } from "./styles";
+import theme from "../../theme";
+
 import { useQuestions } from "../../hooks/useQuestions";
 import { Answer } from "../../context/QuestionsContext";
-
-import { Container, Form, Label, QuestionFooter } from "./styles";
-import { FaChevronRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 interface EventTarget extends HTMLFormElement {
   answers: RadioNodeList;
@@ -16,24 +19,22 @@ interface EventTarget extends HTMLFormElement {
 interface AnswerItemProps {
   answer: Answer;
   selectedAnswerId?: string;
-  handleAnswerChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  defaultChecked?: boolean;
+  handleChangeAnswer: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const AnswerItem: FC<AnswerItemProps> = ({
-  answer,
-  selectedAnswerId,
-  handleAnswerChange,
-  defaultChecked,
-}) => {
+const AnswerItem: FC<AnswerItemProps> = ({ answer, selectedAnswerId, handleChangeAnswer }) => {
+  const isChecked = answer.id === selectedAnswerId;
   return (
-    <Label key={answer.id} isChecked={answer.id === selectedAnswerId}>
+    <Label key={answer.id} isChecked={isChecked}>
+      <div>
+        <FaCheckCircle />
+      </div>
       <input
         type="radio"
         name="answers"
         value={answer.id}
-        onChange={handleAnswerChange}
-        defaultChecked={defaultChecked}
+        onChange={handleChangeAnswer}
+        defaultChecked={isChecked}
       />
       {answer.title}
     </Label>
@@ -41,33 +42,36 @@ const AnswerItem: FC<AnswerItemProps> = ({
 };
 
 const QuestionForm: FC = () => {
+  const navigate = useNavigate();
   const { questions, onAnswer, onChangeQuestion, selectedQuestion, selectedQuestionIndex, answerHistory } =
     useQuestions();
   const [selectedAnswerId, setSelectedAnswerId] = useState<string>();
 
   useEffect(() => {
     const previousAnswerId = answerHistory[selectedQuestionIndex]?.id;
-    if (previousAnswerId) {
-      setSelectedAnswerId(previousAnswerId);
-    }
+    setSelectedAnswerId(previousAnswerId);
   }, [selectedQuestionIndex]);
 
-  const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeAnswer = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedAnswerId(event.target.value);
   };
 
-  const handleAnswerSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmitAnswer = (event: FormEvent<HTMLFormElement>) => {
     const targetElement = event.target as EventTarget;
     onAnswer(targetElement.answers.value);
-    onChangeQuestion(selectedQuestionIndex + 1);
+    if (selectedQuestionIndex + 1 === questions?.length) {
+      navigate("/results", { replace: true });
+    } else {
+      onChangeQuestion(selectedQuestionIndex + 1);
+    }
 
     event.preventDefault();
   };
 
   return (
     <Container>
-      <Form onSubmit={handleAnswerSubmit}>
-        <Text type="p" size="large" marginTop="small">
+      <Form onSubmit={handleSubmitAnswer}>
+        <Text type="p" size="large" marginVertical="small">
           {selectedQuestion ? selectedQuestion.title : "Loading..."}
         </Text>
         {selectedQuestion ? (
@@ -75,8 +79,7 @@ const QuestionForm: FC = () => {
             <AnswerItem
               answer={answer}
               selectedAnswerId={selectedAnswerId}
-              handleAnswerChange={handleAnswerChange}
-              defaultChecked={answer.id === selectedAnswerId}
+              handleChangeAnswer={handleChangeAnswer}
               key={answer.id}
             />
           ))
@@ -84,12 +87,13 @@ const QuestionForm: FC = () => {
           <span />
         )}
         <QuestionFooter>
-          <Button big Icon={FaChevronRight} iconAlignment="right" type="submit" disabled={!questions}>
-            {!questions
-              ? "Loading..."
-              : selectedQuestionIndex < questions.length - 1
-              ? "Next"
-              : "See Results"}
+          <Button
+            Icon={FaChevronRight}
+            iconAlignment="right"
+            type="submit"
+            disabled={!questions || !selectedAnswerId}
+          >
+            {selectedQuestionIndex + 1 === questions?.length ? "See Results" : "Next"}
           </Button>
         </QuestionFooter>
       </Form>

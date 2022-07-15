@@ -46,9 +46,41 @@ export const Label: FC<LabelProps> = styled("label")<LabelProps>`
   border: 1px solid ${({ theme }) => theme.colors.neutral.n500};
   user-select: none;
 
+  div {
+    width: ${({ theme }) => theme.sizing.small};
+    height: ${({ theme }) => theme.sizing.small};
+    align-items: center;
+    justify-content: center;
+    border: 0.125em solid ${({ theme }) => theme.colors.neutral.n300};
+    border-radius: 50%;
+    margin-right: ${({ theme }) => theme.spacing.xsmall};
+
+    transition: border-color 0.2s;
+  }
+
+  svg {
+    width: ${({ theme }) => theme.sizing.small};
+    height: ${({ theme }) => theme.sizing.small};
+    position: relative;
+    top: -0.275em;
+    left: -0.125em;
+    color: transparent;
+
+    transition: color 0.2s;
+  }
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
   :hover {
     background-color: ${({ theme }) => darken(0.05, theme.colors.neutral.n600)};
     color: ${({ theme }) => theme.colors.neutral.n100};
+    div {
+      border-color: ${({ theme }) => theme.colors.neutral.n200};
+    }
   }
 
   ${({ theme, isChecked }) =>
@@ -56,16 +88,23 @@ export const Label: FC<LabelProps> = styled("label")<LabelProps>`
     css`
       background-color: ${theme.colors.main};
       color: ${theme.colors.white};
-
+      div {
+        border-color: ${({ theme }) => theme.colors.white};
+        svg {
+          color: ${({ theme }) => theme.colors.white};
+        }
+      }
       :hover {
         background-color: ${darken(0.1, theme.colors.main)};
         color: ${theme.colors.white};
+        div {
+          border-color: ${({ theme }) => theme.colors.white};
+          svg {
+            color: ${({ theme }) => theme.colors.white};
+          }
+        }
       }
     `}
-
-  input {
-    margin-right: ${({ theme }) => theme.spacing.regular};
-  }
 
   transition: background-color 0.2s, color 0.2s;
 `;
