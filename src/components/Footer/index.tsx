@@ -9,7 +9,6 @@ interface ContainerProps {
 
 const Container: FC<ContainerProps> = styled("footer")<ContainerProps>`
   // default style
-  padding: 0 ${({ theme }) => theme.spacing.xxlarge};
   height: 6em;
   min-height: 2em;
   background-color: ${({ theme }) => theme.colors.secondary.s300};

@@ -1,13 +1,14 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, HTMLProps, ReactNode } from "react";
 
 import styled, { css } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import { validateBooleanProp } from "../../utils/validateProp";
-import logoSrc from "../../assets/testy-logo.svg";
+import { useQuestions } from "../../hooks/useQuestions";
+import logoSrc from "../../assets/logo-testy.svg";
 import Button from "../Button";
 
-interface ContainerProps {
-  hasBorder: boolean;
+interface ContainerProps extends HeaderProps {
   children: ReactNode;
 }
 
@@ -20,6 +21,7 @@ const Container: FC<ContainerProps> = styled("header")<ContainerProps>`
   padding: 0 ${({ theme }) => theme.spacing.xxlarge} !important;
   min-height: 4em;
   height: 4em;
+  z-index: 2;
 
   // hasBorder variant
   ${({ theme, hasBorder }) =>
@@ -27,14 +29,21 @@ const Container: FC<ContainerProps> = styled("header")<ContainerProps>`
     css`
       border-bottom: 1px solid ${theme.colors.neutral.n400};
     `}
+
+  ${({ theme, backgroundColor }) =>
+    backgroundColor &&
+    css`
+      background-color: ${theme.colors[backgroundColor]};
+    `}
 `;
 
-interface LogoProps {
+interface LogoProps extends HTMLProps<HTMLImageElement> {
   src?: string;
 }
 
 const Logo: FC<LogoProps> = styled.img`
   height: ${({ theme }) => theme.sizing.xlarge};
+  cursor: pointer;
 `;
 
 const ButtonsWrapper: FC<{ children: ReactNode }> = styled.div`
@@ -45,13 +54,22 @@ const ButtonsWrapper: FC<{ children: ReactNode }> = styled.div`
 
 interface HeaderProps {
   hasBorder?: boolean;
+  backgroundColor?: string;
 }
 
-const Header: FC<HeaderProps> = ({ hasBorder }) => {
+const Header: FC<HeaderProps> = ({ hasBorder, backgroundColor }) => {
+  const navigate = useNavigate();
+  const { resetState } = useQuestions();
   hasBorder = validateBooleanProp(hasBorder);
+
+  const handleLogoClick = () => {
+    resetState();
+    navigate("/", { replace: true });
+  };
+
   return (
-    <Container hasBorder={hasBorder}>
-      <Logo src={logoSrc} />
+    <Container hasBorder={hasBorder} backgroundColor={backgroundColor}>
+      <Logo src={logoSrc} onClick={handleLogoClick} />
       <ButtonsWrapper>
         <Button light>Sign Up</Button>
         <Button>Sign In</Button>

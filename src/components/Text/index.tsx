@@ -7,28 +7,34 @@ import getSpacingStyles, { SizingPropType, SpacingProps } from "../utils/spacing
 interface StyledTextProps extends SpacingProps {
   color?: string;
   size?: SizingPropType;
+  fontWeight?: 300 | 400 | 500 | 600 | 700;
   children: ReactNode;
   theme?: any;
 }
 
-const getCommonTextStyles = (props: StyledTextProps) => css`
+const getCommonTextStyles = ({ color, size, fontWeight, theme }: StyledTextProps) => css`
   white-space: pre-line;
-  color: ${props.color
-    ? props.theme.colors[props.color.split(".")[0]][props.color.split(".")[1]]
-    : props.theme.colors.neutral.n100};
-  ${props.size &&
+  color: ${color
+    ? color.includes(".")
+      ? theme.colors[color.split(".")[0]][color.split(".")[1]]
+      : theme.colors[color]
+    : theme.colors.neutral.n100};
+  ${size &&
   css`
-    font-size: ${props.theme.sizing[props.size]};
+    font-size: ${theme.sizing[size]};
+  `}
+  ${fontWeight &&
+  css`
+    font-weight: ${fontWeight};
   `}
 `;
 
 const H1: FC<StyledTextProps> = styled("h1")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
 
-  font-size: ${({ theme }) => theme.sizing.xxxlarge};
-  ${(props) => getCommonTextStyles(props)}
-
+  font-size: ${({ theme }) => theme.sizing.xxxxlarge};
   font-weight: 600;
+  ${(props) => getCommonTextStyles(props)}
 
   span {
     font-weight: 700;
@@ -43,9 +49,8 @@ const H2: FC<StyledTextProps> = styled("h2")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
 
   font-size: ${({ theme }) => theme.sizing.xxlarge};
+  font-weight: 600;
   ${(props) => getCommonTextStyles(props)}
-
-  font-weight: 500;
 
   span {
     font-weight: 700;
@@ -60,9 +65,8 @@ const P: FC<StyledTextProps> = styled("p")<StyledTextProps>`
   ${(props) => getSpacingStyles(props)}
 
   font-size: ${({ theme }) => theme.sizing.regular};
+  font-weight: 400;
   ${(props) => getCommonTextStyles(props)}
-
-  font-weight: 500;
 
   span {
     font-weight: 700;
