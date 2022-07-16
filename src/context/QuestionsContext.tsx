@@ -13,6 +13,13 @@ type Question = {
   answers: Answer[];
 };
 
+type Result = {
+  title: "introvert" | "extrovert";
+  description: string;
+  contactTitle: string;
+  id: string;
+};
+
 type QuestionsContextType = {
   questions: Question[] | null;
   selectedQuestion?: Question | null;
@@ -20,6 +27,8 @@ type QuestionsContextType = {
   answerHistory: Answer[];
   onAnswer: (answerId: string) => void;
   onChangeQuestion: (questionIndex: number) => void;
+  result?: Result;
+  resetState: () => void;
 };
 
 interface QuestionsProviderInterface {
@@ -30,31 +39,45 @@ export const QuestionsContext = createContext({} as QuestionsContextType);
 
 export function QuestionsProvider({ children }: QuestionsProviderInterface) {
   const { data: questions } = useFetch<Question[]>("/questions");
+  const { data: results } = useFetch<Result[]>("/results");
 
   const [selectedQuestion, setSelectedQuestion] = useState<Question>();
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number>(0);
   const [answerHistory, setAnswerHistory] = useState<Answer[]>([]);
+  const [result, setResult] = useState<Result>();
 
-  useEffect(() => {
-    console.log({
-      questions,
-      selectedQuestion,
-      selectedQuestionIndex,
-      answerHistory,
-    });
-  }, [, selectedQuestionIndex]);
-
+  // map selectedQuestion according to selectedQuestionIndex
   useEffect(() => {
     if (questions) {
       setSelectedQuestion(questions[selectedQuestionIndex]);
     }
   }, [questions, selectedQuestionIndex]);
 
+  // set answerHistory values to null on the same length as the questions
   useEffect(() => {
     if (questions && answerHistory?.length < 1) {
       setAnswerHistory(Array(questions.length).fill(null));
     }
-  }, [questions]);
+  }, [questions, answerHistory]);
+
+  // calculate result when answerHistory is totally filled
+  useEffect(() => {
+    if (results && answerHistory.every((answer) => answer !== null)) {
+      console.log(answerHistory);
+      calculateResult();
+    }
+  }, [answerHistory, results]);
+
+  function calculateResult() {
+    const answerValues = answerHistory.map((answer) => answer.value);
+    const sum = answerValues.reduce((a, b) => a + b, 0);
+    const average = sum / answerValues.length;
+
+    const title = average > 0.5 ? "extrovert" : "introvert";
+    const tempResult = results?.find((result) => result.title === title);
+
+    if (tempResult) setResult(tempResult);
+  }
 
   function onAnswer(answerId: string) {
     let newAnswerHistory = [...answerHistory];
@@ -67,6 +90,12 @@ export function QuestionsProvider({ children }: QuestionsProviderInterface) {
     setSelectedQuestionIndex(questionIndex);
   }
 
+  function resetState() {
+    setSelectedQuestionIndex(0);
+    setAnswerHistory([]);
+    setResult(undefined);
+  }
+
   return (
     <QuestionsContext.Provider
       value={{
@@ -76,6 +105,8 @@ export function QuestionsProvider({ children }: QuestionsProviderInterface) {
         answerHistory,
         onAnswer,
         onChangeQuestion,
+        result,
+        resetState,
       }}
     >
       {children}
