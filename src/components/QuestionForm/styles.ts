@@ -62,7 +62,7 @@ export const Label: FC<LabelProps> = styled("label")<LabelProps>`
     width: ${({ theme }) => theme.sizing.small};
     height: ${({ theme }) => theme.sizing.small};
     position: relative;
-    top: -0.275em;
+    top: -0.225em;
     left: -0.125em;
     color: transparent;
 

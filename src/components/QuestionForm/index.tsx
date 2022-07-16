@@ -48,8 +48,10 @@ const QuestionForm: FC = () => {
   const [selectedAnswerId, setSelectedAnswerId] = useState<string>();
 
   useEffect(() => {
-    const previousAnswerId = answerHistory[selectedQuestionIndex]?.id;
-    setSelectedAnswerId(previousAnswerId);
+    if (answerHistory?.length > 0) {
+      const previousAnswerId = answerHistory[selectedQuestionIndex]?.id;
+      setSelectedAnswerId(previousAnswerId);
+    }
   }, [selectedQuestionIndex]);
 
   const handleChangeAnswer = (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +73,7 @@ const QuestionForm: FC = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmitAnswer}>
-        <Text type="p" size="large" marginVertical="small">
+        <Text type="p" size="large" fontWeight={500} marginVertical="small">
           {selectedQuestion ? selectedQuestion.title : "Loading..."}
         </Text>
         {selectedQuestion ? (
