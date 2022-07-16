@@ -1,22 +1,18 @@
 import React, { FC, ReactNode } from "react";
-
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { SpacingProps } from "../../components/utils/spacingStyles";
-
-import PageWrapper from "../../components/PageWrapper";
+import illustrationExtrovert from "../../assets/illustration-off_road.svg";
+import illustrationIntrovert from "../../assets/illustration-tree_swing.svg";
+import Button from "../../components/Button";
+import ContactCard from "../../components/ContactCard";
+import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContent from "../../components/PageContent";
+import PageWrapper from "../../components/PageWrapper";
 import Text from "../../components/Text";
-import Button from "../../components/Button";
-import Footer from "../../components/Footer";
-import ContactCard from "../../components/ContactCard";
-
-import illustrationIntrovert from "../../assets/illustration-tree_swing.svg";
-import illustrationExtrovert from "../../assets/illustration-off_road.svg";
-
-import { useQuestions } from "../../hooks/useQuestions";
-import { useNavigate } from "react-router-dom";
+import { SpacingProps } from "../../components/utils/spacingStyles";
+import useQuestions from "../../hooks/useQuestions";
 
 interface TextWrapperProps extends SpacingProps {
   children: ReactNode;
@@ -46,7 +42,7 @@ const illustrations = {
   },
   extrovert: {
     src: illustrationExtrovert,
-    marginRight: "0",
+    marginRight: "5em",
     positionY: "-22.6em",
     height: "28em",
   },
@@ -63,7 +59,7 @@ const ResultsPage: FC = () => {
 
   return (
     <PageWrapper>
-      <Header hasBorder backgroundColor="white" />
+      <Header hasBorder backgroundColor="white.w100" />
       <PageContent paddingHorizontal="xxxlarge" paddingVertical="xxlarge">
         <TextWrapper>
           <Text type="h1" size="xxxlarge">

@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-
 import styled, { css } from "styled-components";
 
 interface ProgressBarProps {
@@ -35,11 +34,14 @@ const ProgressItem: FC<ProgressItemProps> = styled("span")<ProgressItemProps>`
 
 const ProgressBar: FC<ProgressBarProps> = ({ filledItems, totalItems }) => {
   let progressItems: boolean[] = [];
-  for (let item = 0; item < totalItems; item++) progressItems = [...progressItems, item <= filledItems - 1];
+  for (let item = 0; item < totalItems; item += 1)
+    progressItems = [...progressItems, item <= filledItems - 1];
 
   return (
     <StyledProgressBar>
       {progressItems.map((isFilled, index) => (
+        // using index as key because it is static, not used as stack or LIFO and never sorted/filtered
+        // eslint-disable-next-line react/no-array-index-key
         <ProgressItem isFilled={isFilled} key={index} />
       ))}
     </StyledProgressBar>

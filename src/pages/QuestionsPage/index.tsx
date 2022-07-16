@@ -1,21 +1,18 @@
 import React, { FC, ReactNode } from "react";
-
-import styled from "styled-components";
 import { FaChevronLeft } from "react-icons/fa";
-
-import getSpacingStyles, { SpacingProps } from "../../components/utils/spacingStyles";
-
-import PageWrapper from "../../components/PageWrapper";
-import Header from "../../components/Header";
-import PageContent from "../../components/PageContent";
-import Text from "../../components/Text";
-import Button from "../../components/Button";
-import Footer from "../../components/Footer";
+import styled from "styled-components";
 
 import illustrationFaqSrc from "../../assets/illustration-faq.svg";
+import Button from "../../components/Button";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import PageContent from "../../components/PageContent";
+import PageWrapper from "../../components/PageWrapper";
 import ProgressBar from "../../components/ProgressBar";
-import { useQuestions } from "../../hooks/useQuestions";
 import QuestionForm from "../../components/QuestionForm";
+import Text from "../../components/Text";
+import getSpacingStyles, { SpacingProps } from "../../components/utils/spacingStyles";
+import useQuestions from "../../hooks/useQuestions";
 
 interface SubheaderProps extends SpacingProps {
   children: ReactNode;

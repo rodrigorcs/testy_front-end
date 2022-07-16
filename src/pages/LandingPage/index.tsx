@@ -1,19 +1,16 @@
 import React, { FC, ReactNode } from "react";
-
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { SpacingProps } from "../../components/utils/spacingStyles";
-
-import PageWrapper from "../../components/PageWrapper";
-import Header from "../../components/Header";
-import PageContent from "../../components/PageContent";
-import Text from "../../components/Text";
+import illustrationDayOffSrc from "../../assets/illustration-a_day_off.svg";
+import illustrationReadingSrc from "../../assets/illustration-reading.svg";
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
-
-import illustrationReadingSrc from "../../assets/illustration-reading.svg";
-import illustrationDayOffSrc from "../../assets/illustration-a_day_off.svg";
+import Header from "../../components/Header";
+import PageContent from "../../components/PageContent";
+import PageWrapper from "../../components/PageWrapper";
+import Text from "../../components/Text";
+import { SpacingProps } from "../../components/utils/spacingStyles";
 import theme from "../../theme";
 
 interface TextWrapperProps extends SpacingProps {
@@ -25,7 +22,7 @@ const TextWrapper: FC<TextWrapperProps> = styled.section`
   display: flex;
   flex-direction: column;
   & > :not(:first-child) {
-    margin-top: ${({ theme }) => theme.spacing.regular};
+    margin-top: ${theme.spacing.regular};
   }
 `;
 

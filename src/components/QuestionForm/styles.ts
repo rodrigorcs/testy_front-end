@@ -1,5 +1,5 @@
 import { darken } from "polished";
-import React, { FC, ReactNode, HTMLProps } from "react";
+import { FC, HTMLProps, ReactNode } from "react";
 import styled, { css } from "styled-components";
 
 import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
@@ -86,21 +86,21 @@ export const Label: FC<LabelProps> = styled("label")<LabelProps>`
   ${({ theme, isChecked }) =>
     isChecked &&
     css`
-      background-color: ${theme.colors.main};
-      color: ${theme.colors.white};
+      background-color: ${theme.colors.main.m100};
+      color: ${theme.colors.white.w100};
       div {
-        border-color: ${({ theme }) => theme.colors.white};
+        border-color: ${theme.colors.white.w100};
         svg {
-          color: ${({ theme }) => theme.colors.white};
+          color: ${theme.colors.white.w100};
         }
       }
       :hover {
-        background-color: ${darken(0.1, theme.colors.main)};
-        color: ${theme.colors.white};
+        background-color: ${darken(0.1, theme.colors.main.m100)};
+        color: ${theme.colors.white.w100};
         div {
-          border-color: ${({ theme }) => theme.colors.white};
+          border-color: ${theme.colors.white.w100};
           svg {
-            color: ${({ theme }) => theme.colors.white};
+            color: ${theme.colors.white.w100};
           }
         }
       }

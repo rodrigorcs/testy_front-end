@@ -1,8 +1,7 @@
 import React, { FC, ReactNode } from "react";
-
 import styled from "styled-components";
 
-import getSpacingStyles, { SpacingProps } from "../../components/utils/spacingStyles";
+import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
 
 interface PageContentProps extends SpacingProps {
   alignment?: "flex-start" | "center" | "flex-end";
@@ -14,7 +13,7 @@ const StyledPageContent: FC<PageContentProps> = styled("div")<PageContentProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: ${({ alignment }) => (alignment ? alignment : "flex-start")};
+  align-items: ${({ alignment }) => alignment || "flex-start"};
   z-index: 2;
 `;
 

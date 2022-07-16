@@ -1,5 +1,7 @@
 import { css } from "styled-components";
 
+import { Theme } from "../../theme";
+
 export type SizingPropType =
   | "xxxsmall"
   | "xxsmall"
@@ -30,7 +32,7 @@ export interface SpacingProps {
 }
 
 interface ComponentProps extends SpacingProps {
-  theme: any;
+  theme: Theme;
 }
 
 const getSpacingStyles = (props: ComponentProps) => css`

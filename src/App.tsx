@@ -1,12 +1,11 @@
 import React, { FC } from "react";
-
-import { BrowserRouter, Routes, useRoutes } from "react-router-dom";
-import GlobalStyle from "./theme/global";
+import { BrowserRouter, useRoutes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
-import theme from "./theme";
-import routes from "./routes";
 import { QuestionsProvider } from "./context/QuestionsContext";
+import routes from "./routes";
+import theme from "./theme";
+import GlobalStyle from "./theme/global";
 
 const Router: FC = () => {
   return useRoutes(routes);

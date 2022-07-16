@@ -1,5 +1,6 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
-import { useFetch } from "../hooks/useFetch";
+import React, { ReactNode, createContext, useEffect, useMemo, useState } from "react";
+
+import useFetch from "../hooks/useFetch";
 
 export type Answer = {
   title: string;
@@ -37,7 +38,7 @@ interface QuestionsProviderInterface {
 
 export const QuestionsContext = createContext({} as QuestionsContextType);
 
-export function QuestionsProvider({ children }: QuestionsProviderInterface) {
+export const QuestionsProvider = ({ children }: QuestionsProviderInterface) => {
   const { data: questions } = useFetch<Question[]>("/questions");
   const { data: results } = useFetch<Result[]>("/results");
 
@@ -62,29 +63,21 @@ export function QuestionsProvider({ children }: QuestionsProviderInterface) {
 
   // calculate result when answerHistory is totally filled
   useEffect(() => {
+    function calculateResult() {
+      const answerValues = answerHistory.map((thisAnswer) => thisAnswer.value);
+      const sum = answerValues.reduce((a, b) => a + b, 0);
+      const average = sum / answerValues.length;
+
+      const title = average > 0.5 ? "extrovert" : "introvert";
+      const tempResult = results?.find((thisResult) => thisResult.title === title);
+
+      if (tempResult) setResult(tempResult);
+    }
+
     if (results && answerHistory.every((answer) => answer !== null)) {
-      console.log(answerHistory);
       calculateResult();
     }
   }, [answerHistory, results]);
-
-  function calculateResult() {
-    const answerValues = answerHistory.map((answer) => answer.value);
-    const sum = answerValues.reduce((a, b) => a + b, 0);
-    const average = sum / answerValues.length;
-
-    const title = average > 0.5 ? "extrovert" : "introvert";
-    const tempResult = results?.find((result) => result.title === title);
-
-    if (tempResult) setResult(tempResult);
-  }
-
-  function onAnswer(answerId: string) {
-    let newAnswerHistory = [...answerHistory];
-    const answer = selectedQuestion?.answers.find((answer) => answer.id === answerId);
-    if (answer) newAnswerHistory[selectedQuestionIndex] = answer;
-    setAnswerHistory(newAnswerHistory);
-  }
 
   function onChangeQuestion(questionIndex: number) {
     setSelectedQuestionIndex(questionIndex);
@@ -96,20 +89,25 @@ export function QuestionsProvider({ children }: QuestionsProviderInterface) {
     setResult(undefined);
   }
 
-  return (
-    <QuestionsContext.Provider
-      value={{
-        questions,
-        selectedQuestion,
-        selectedQuestionIndex,
-        answerHistory,
-        onAnswer,
-        onChangeQuestion,
-        result,
-        resetState,
-      }}
-    >
-      {children}
-    </QuestionsContext.Provider>
-  );
-}
+  const value = useMemo(() => {
+    function onAnswer(answerId: string) {
+      const newAnswerHistory = [...answerHistory];
+      const answer = selectedQuestion?.answers.find((thisAnswer) => thisAnswer.id === answerId);
+      if (answer) newAnswerHistory[selectedQuestionIndex] = answer;
+
+      setAnswerHistory(newAnswerHistory);
+    }
+    return {
+      questions,
+      selectedQuestion,
+      selectedQuestionIndex,
+      answerHistory,
+      onAnswer,
+      onChangeQuestion,
+      result,
+      resetState,
+    };
+  }, [questions, selectedQuestion, selectedQuestionIndex, answerHistory, result]);
+
+  return <QuestionsContext.Provider value={value}>{children}</QuestionsContext.Provider>;
+};

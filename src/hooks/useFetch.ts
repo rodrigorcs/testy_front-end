@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export function useFetch<T = unknown>(url: string) {
+function useFetch<T = unknown>(url: string) {
   const BASE_URL = "https://62d092a0d9bf9f17058b1f09.mockapi.io/testy/api";
+
   const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
@@ -13,7 +14,9 @@ export function useFetch<T = unknown>(url: string) {
     }).then((response) => {
       setData(response.data);
     });
-  }, []);
+  }, [url]);
 
   return { data };
 }
+
+export default useFetch;

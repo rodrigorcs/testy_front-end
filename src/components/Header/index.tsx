@@ -1,11 +1,9 @@
 import React, { FC, HTMLProps, ReactNode } from "react";
-
-import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import styled, { css } from "styled-components";
 
-import { validateBooleanProp } from "../../utils/validateProp";
-import { useQuestions } from "../../hooks/useQuestions";
 import logoSrc from "../../assets/logo-testy.svg";
+import useQuestions from "../../hooks/useQuestions";
 import Button from "../Button";
 
 interface ContainerProps extends HeaderProps {
@@ -33,7 +31,7 @@ const Container: FC<ContainerProps> = styled("header")<ContainerProps>`
   ${({ theme, backgroundColor }) =>
     backgroundColor &&
     css`
-      background-color: ${theme.colors[backgroundColor]};
+      background-color: ${theme.colors[backgroundColor.split(".")[0]][backgroundColor.split(".")[1]]};
     `}
 `;
 
@@ -60,7 +58,6 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = ({ hasBorder, backgroundColor }) => {
   const navigate = useNavigate();
   const { resetState } = useQuestions();
-  hasBorder = validateBooleanProp(hasBorder);
 
   const handleLogoClick = () => {
     resetState();

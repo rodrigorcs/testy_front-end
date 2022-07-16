@@ -1,9 +1,9 @@
-import React, { FC, ReactNode, HTMLProps } from "react";
-
-import styled, { css } from "styled-components";
 import { darken, transparentize } from "polished";
-import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
+import React, { FC, HTMLProps, ReactNode } from "react";
 import { IconType } from "react-icons";
+import styled, { css } from "styled-components";
+
+import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
 
 interface StyledButtonProps extends SpacingProps, HTMLProps<HTMLButtonElement> {
   light?: boolean;
@@ -18,16 +18,16 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
   // default style
   ${(props) => getSpacingStyles(props)}
   padding: ${({ theme }) => `${theme.spacing.xxsmall} ${theme.spacing.large}`};
-  background-color: ${({ theme }) => theme.colors.main};
+  background-color: ${({ theme }) => theme.colors.main.m100};
   border-radius: ${({ theme }) => theme.sizing.xxxsmall};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white.w100};
   font-size: ${({ theme }) => theme.sizing.small};
   font-weight: 500;
   user-select: none;
 
   :hover {
-    background-color: ${({ theme }) => darken(0.1, theme.colors.main)};
-    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => darken(0.1, theme.colors.main.m100)};
+    color: ${({ theme }) => theme.colors.white.w100};
   }
   :disabled {
     cursor: default;
@@ -39,8 +39,8 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
   ${({ theme, light }) =>
     light &&
     css`
-      background-color: ${transparentize(0.9, theme.colors.main)};
-      color: ${theme.colors.main};
+      background-color: ${transparentize(0.9, theme.colors.main.m100)};
+      color: ${theme.colors.main.m100};
     `}
 
   // big variant
@@ -58,19 +58,19 @@ const StyledButton: FC<StyledButtonProps> = styled("button")<StyledButtonProps>`
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: ${({ theme }) => `${theme.spacing.xxsmall} ${theme.spacing.small}`};
+      padding: ${`${theme.spacing.xxsmall} ${theme.spacing.small}`};
       background-color: transparent;
       color: ${textColor
         ? theme.colors[textColor.split(".")[0]][textColor.split(".")[1]]
         : theme.colors.neutral.n100};
       text-transform: uppercase;
       :hover {
-        background-color: ${transparentize(0.9, theme.colors.main)};
-        color: ${({ theme }) => theme.colors.main};
+        background-color: ${transparentize(0.9, theme.colors.main.m100)};
+        color: ${theme.colors.main.m100};
       }
       :disabled {
         background-color: transparent;
-        color: ${({ theme }) => theme.colors.neutral.n300};
+        color: ${theme.colors.neutral.n300};
       }
     `}
 

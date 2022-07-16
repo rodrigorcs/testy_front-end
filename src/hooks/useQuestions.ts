@@ -1,8 +1,11 @@
 import { useContext } from "react";
+
 import { QuestionsContext } from "../context/QuestionsContext";
 
-export function useQuestions() {
+function useQuestions() {
   const questions = useContext(QuestionsContext);
 
   return questions;
 }
+
+export default useQuestions;

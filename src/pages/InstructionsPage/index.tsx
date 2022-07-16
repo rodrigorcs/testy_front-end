@@ -1,18 +1,17 @@
 import React, { FC, ReactNode } from "react";
-
-import styled from "styled-components";
 import { FaCheckCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import theme from "../../theme";
-import PageWrapper from "../../components/PageWrapper";
-import Header from "../../components/Header";
-import PageContent from "../../components/PageContent";
-import Text from "../../components/Text";
+import illustrationKeyPointsSrc from "../../assets/illustration-key_points.svg";
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import PageContent from "../../components/PageContent";
+import PageWrapper from "../../components/PageWrapper";
+import Text from "../../components/Text";
 import getSpacingStyles, { SpacingProps } from "../../components/utils/spacingStyles";
-import illustrationKeyPointsSrc from "../../assets/illustration-key_points.svg";
-import { useNavigate } from "react-router-dom";
+import theme from "../../theme";
 
 interface InstructionsListProps extends SpacingProps {
   children: ReactNode;
@@ -20,13 +19,13 @@ interface InstructionsListProps extends SpacingProps {
 
 const StyledInstructionsList: FC<InstructionsListProps> = styled.ul`
   ${(props) => getSpacingStyles(props)}
-  padding: ${({ theme }) => theme.spacing.xlarge};
+  padding: ${theme.spacing.xlarge};
   max-width: 40em;
-  background-color: ${({ theme }) => theme.colors.background.b200};
-  border-radius: ${({ theme }) => theme.sizing.xxsmall};
-  border: 2px solid ${({ theme }) => theme.colors.neutral.n500};
+  background-color: ${theme.colors.background.b200};
+  border-radius: ${theme.sizing.xxsmall};
+  border: 2px solid ${theme.colors.neutral.n500};
   & > :not(:first-child) {
-    margin-top: ${({ theme }) => theme.spacing.small};
+    margin-top: ${theme.spacing.small};
   }
 `;
 
@@ -35,7 +34,7 @@ const InstructionItem: FC<{ children: ReactNode }> = styled.li`
   flex-direction: row;
   align-items: center;
   & > :not(:first-child) {
-    margin-left: ${({ theme }) => theme.spacing.small};
+    margin-left: ${theme.spacing.small};
   }
 `;
 

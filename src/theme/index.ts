@@ -1,8 +1,14 @@
-import colors from "./colors";
-import sizing from "./sizing";
-import spacing from "./spacing";
+import colors, { Colors } from "./colors";
+import sizing, { Sizes } from "./sizing";
+import spacing, { Spaces } from "./spacing";
 
-const theme = {
+export type Theme = {
+  colors: Colors;
+  sizing: Sizes;
+  spacing: Spaces;
+};
+
+const theme: Theme = {
   colors,
   sizing,
   spacing,

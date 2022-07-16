@@ -1,16 +1,12 @@
-import React, { FC, ChangeEvent, FormEvent, useState, useEffect } from "react";
-
-import { FaCheckCircle, FaChevronRight, FaRegCircle } from "react-icons/fa";
-
-import Text from "../../components/Text";
-import Button from "../../components/Button";
-
-import { Container, Form, Label, QuestionFooter } from "./styles";
-import theme from "../../theme";
-
-import { useQuestions } from "../../hooks/useQuestions";
-import { Answer } from "../../context/QuestionsContext";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import { FaCheckCircle, FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
+import { Answer } from "../../context/QuestionsContext";
+import useQuestions from "../../hooks/useQuestions";
+import Button from "../Button";
+import Text from "../Text";
+import { Container, Form, Label, QuestionFooter } from "./styles";
 
 interface EventTarget extends HTMLFormElement {
   answers: RadioNodeList;
@@ -22,7 +18,7 @@ interface AnswerItemProps {
   handleChangeAnswer: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const AnswerItem: FC<AnswerItemProps> = ({ answer, selectedAnswerId, handleChangeAnswer }) => {
+const AnswerItem: FC<AnswerItemProps> = ({ answer, selectedAnswerId = "", handleChangeAnswer }) => {
   const isChecked = answer.id === selectedAnswerId;
   return (
     <Label key={answer.id} isChecked={isChecked}>
@@ -52,7 +48,7 @@ const QuestionForm: FC = () => {
       const previousAnswerId = answerHistory[selectedQuestionIndex]?.id;
       setSelectedAnswerId(previousAnswerId);
     }
-  }, [selectedQuestionIndex]);
+  }, [selectedQuestionIndex, answerHistory]);
 
   const handleChangeAnswer = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedAnswerId(event.target.value);
