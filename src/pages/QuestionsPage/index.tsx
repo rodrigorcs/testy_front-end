@@ -64,12 +64,12 @@ const QuestionsPage: FC = () => {
             >
               Previous
             </Button>
-            <Text type="p" size="small" color="neutral.n300">
+            <Text type="p" size="small" fontWeight={500} color="neutral.n300">
               Are you more of an introvert or extrovert?
             </Text>
           </SubheaderNavigation>
         </Subheader>
-        <Text type="p" size="small" color="neutral.n300">
+        <Text type="p" size="small" fontWeight={500} color="neutral.n300" marginTop="regular">
           QUESTION {selectedQuestionIndex + 1} OF {questions ? questions.length : 0}
         </Text>
         <QuestionForm />

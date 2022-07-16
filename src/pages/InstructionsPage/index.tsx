@@ -70,7 +70,7 @@ const InstructionsList: FC = () => {
 };
 
 const illustrations = [
-  { src: illustrationKeyPointsSrc, marginRight: "4em", positionY: "-22em", height: "22em" },
+  { src: illustrationKeyPointsSrc, marginRight: "6em", positionY: "-22em", height: "22em" },
 ];
 
 const InstructionsPage: FC = () => {
@@ -82,7 +82,7 @@ const InstructionsPage: FC = () => {
     <PageWrapper>
       <Header hasBorder />
       <PageContent paddingVertical="xxlarge" paddingHorizontal="xxxlarge">
-        <Text type="p" size="small">
+        <Text type="p" size="small" color="neutral.n200" fontWeight={500}>
           Are you more of an introvert or extrovert?
         </Text>
         <Text type="h2" marginTop="xxsmall">

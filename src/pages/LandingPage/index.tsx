@@ -30,8 +30,8 @@ const TextWrapper: FC<TextWrapperProps> = styled.section`
 `;
 
 const illustrations = [
-  { src: illustrationReadingSrc, marginLeft: "2em", positionY: "-7.2em", height: "9em" },
-  { src: illustrationDayOffSrc, marginRight: "0em", positionY: "-25.9em", height: "28em" },
+  { src: illustrationReadingSrc, marginLeft: "4em", positionY: "-7.2em", height: "9em" },
+  { src: illustrationDayOffSrc, marginRight: "2em", positionY: "-25.9em", height: "28em" },
 ];
 
 const LandingPage: FC = () => {
