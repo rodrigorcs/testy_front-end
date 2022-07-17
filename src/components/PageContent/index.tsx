@@ -1,14 +1,28 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { FC, ReactNode } from "react";
 import styled from "styled-components";
 
 import getSpacingStyles, { SpacingProps } from "../utils/spacingStyles";
 
+type Animation = {
+  x: number;
+  opacity: number;
+};
+
+type Transition = {
+  duration: number;
+};
+
 interface PageContentProps extends SpacingProps {
   alignment?: "flex-start" | "center" | "flex-end";
+  initial?: Animation;
+  animate?: Animation;
+  exit?: Animation;
+  transition?: Transition;
   children: ReactNode;
 }
 
-const StyledPageContent: FC<PageContentProps> = styled("div")<PageContentProps>`
+const StyledPageContent: FC<PageContentProps> = styled(motion.div)<PageContentProps>`
   ${(props) => getSpacingStyles(props)}
   flex: 1;
   display: flex;
@@ -19,9 +33,17 @@ const StyledPageContent: FC<PageContentProps> = styled("div")<PageContentProps>`
 
 const PageContent: FC<PageContentProps> = ({ alignment, children, ...props }) => {
   return (
-    <StyledPageContent alignment={alignment} {...props}>
-      {children}
-    </StyledPageContent>
+    <AnimatePresence>
+      <StyledPageContent
+        initial={{ x: -6, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        alignment={alignment}
+        {...props}
+      >
+        {children}
+      </StyledPageContent>
+    </AnimatePresence>
   );
 };
 

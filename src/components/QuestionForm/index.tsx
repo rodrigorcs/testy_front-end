@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { FaCheckCircle, FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -39,8 +40,14 @@ const AnswerItem: FC<AnswerItemProps> = ({ answer, selectedAnswerId = "", handle
 
 const QuestionForm: FC = () => {
   const navigate = useNavigate();
-  const { questions, onAnswer, onChangeQuestion, selectedQuestion, selectedQuestionIndex, answerHistory } =
-    useQuestions();
+  const {
+    questions,
+    onAnswer,
+    onChangeQuestion,
+    selectedQuestion,
+    selectedQuestionIndex,
+    answerHistory,
+  } = useQuestions();
   const [selectedAnswerId, setSelectedAnswerId] = useState<string>();
 
   useEffect(() => {
@@ -67,35 +74,43 @@ const QuestionForm: FC = () => {
   };
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmitAnswer}>
-        <Text type="p" size="large" fontWeight={500} marginVertical="small">
-          {selectedQuestion ? selectedQuestion.title : "Loading..."}
-        </Text>
-        {selectedQuestion ? (
-          selectedQuestion.answers.map((answer) => (
-            <AnswerItem
-              answer={answer}
-              selectedAnswerId={selectedAnswerId}
-              handleChangeAnswer={handleChangeAnswer}
-              key={answer.id}
-            />
-          ))
-        ) : (
-          <span />
-        )}
-        <QuestionFooter>
-          <Button
-            Icon={FaChevronRight}
-            iconAlignment="right"
-            type="submit"
-            disabled={!questions || !selectedAnswerId}
-          >
-            {selectedQuestionIndex + 1 === questions?.length ? "See Results" : "Next"}
-          </Button>
-        </QuestionFooter>
-      </Form>
-    </Container>
+    <AnimatePresence>
+      <Container>
+        <Form
+          onSubmit={handleSubmitAnswer}
+          key={selectedQuestionIndex}
+          initial={{ x: "-100vw", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ type: "spring", duration: 0.5 }}
+        >
+          <Text type="p" size="large" fontWeight={500} marginVertical="small">
+            {selectedQuestion ? selectedQuestion.title : "Loading..."}
+          </Text>
+          {selectedQuestion ? (
+            selectedQuestion.answers.map((answer) => (
+              <AnswerItem
+                answer={answer}
+                selectedAnswerId={selectedAnswerId}
+                handleChangeAnswer={handleChangeAnswer}
+                key={answer.id}
+              />
+            ))
+          ) : (
+            <span />
+          )}
+          <QuestionFooter>
+            <Button
+              Icon={FaChevronRight}
+              iconAlignment="right"
+              type="submit"
+              disabled={!questions || !selectedAnswerId}
+            >
+              {selectedQuestionIndex + 1 === questions?.length ? "See Results" : "Next"}
+            </Button>
+          </QuestionFooter>
+        </Form>
+      </Container>
+    </AnimatePresence>
   );
 };
 

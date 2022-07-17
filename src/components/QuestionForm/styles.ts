@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { darken } from "polished";
 import { FC, HTMLProps, ReactNode } from "react";
 import styled, { css } from "styled-components";
@@ -8,7 +9,7 @@ interface ContainerProps extends SpacingProps {
   children: ReactNode;
 }
 
-export const Container: FC<ContainerProps> = styled.section`
+export const Container: FC<ContainerProps> = styled("section")`
   ${(props) => getSpacingStyles(props)}
   flex: 1;
   display: flex;
@@ -17,11 +18,28 @@ export const Container: FC<ContainerProps> = styled.section`
   max-width: 36em;
 `;
 
+// initial={{ x: "-100vw", opacity: 0 }}
+//           animate={{ x: 0, opacity: 1 }}
+//           transition={{ type: "spring", duration: 0.5 }}
+
+type Animation = {
+  x: string | number;
+  opacity: number;
+};
+
+type Transition = {
+  type: string;
+  duration: number;
+};
+
 interface FormProps extends SpacingProps, HTMLProps<HTMLFormElement> {
+  initial?: Animation;
+  animate?: Animation;
+  transition?: Transition;
   children: ReactNode;
 }
 
-export const Form: FC<FormProps> = styled.form`
+export const Form: FC<FormProps> = styled(motion.form)<FormProps>`
   ${(props) => getSpacingStyles(props)}
   width: 100%;
 

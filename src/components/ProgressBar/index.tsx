@@ -17,19 +17,29 @@ const StyledProgressBar: FC<{ children: ReactNode }> = styled.div`
 `;
 
 interface ProgressItemProps {
-  isFilled: boolean;
+  isFilled?: boolean;
 }
 
 const ProgressItem: FC<ProgressItemProps> = styled("span")<ProgressItemProps>`
+  display: flex;
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.neutral.n500};
   border-radius: ${({ theme }) => theme.sizing.xxsmall};
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    ${({ theme }) => theme.colors.secondary.s200} 50%,
+    ${({ theme }) => theme.colors.neutral.n500} 50%
+  );
+  background-size: 200% 100%;
+  background-position: right bottom;
 
-  ${({ theme, isFilled }) =>
+  ${({ isFilled }) =>
     isFilled &&
     css`
-      background-color: ${theme.colors.secondary.s200};
+      background-position: left bottom;
     `}
+
+  transition: all .5s ease;
 `;
 
 const ProgressBar: FC<ProgressBarProps> = ({ filledItems, totalItems }) => {
